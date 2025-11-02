@@ -44,13 +44,13 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
-    --sidebar-background: 220 17% 95%;
-    --sidebar-foreground: 220 13% 23%;
+    --sidebar-background: 217 91% 20%;
+    --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 88%;
-    --sidebar-accent-foreground: 220 13% 13%;
-    --sidebar-border: 220 13% 87%;
+    --sidebar-accent: 217 91% 25%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 91% 30%;
     --sidebar-ring: 217 91% 60%;
 
     /* Industrial Design System */
@@ -98,13 +98,13 @@ All colors MUST be HSL.
     --input: 224 20% 20%;
     --ring: 217 91% 60%;
 
-    --sidebar-background: 224 20% 11%;
-    --sidebar-foreground: 210 40% 95%;
+    --sidebar-background: 217 91% 15%;
+    --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 224 20% 16%;
+    --sidebar-accent: 217 91% 20%;
     --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 224 20% 18%;
+    --sidebar-border: 217 91% 25%;
     --sidebar-ring: 217 91% 60%;
 
     /* Industrial Design System - Dark */
