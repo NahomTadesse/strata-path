@@ -737,7 +737,7 @@ const Settings = () => {
                       <Input id="iot-endpoint" defaultValue="mqtt://iot.factory.local:1883" className="text-sm" />
                     </div>
                     <Button size="sm" variant="outline" className="w-full">
-                      <Settings className="h-4 w-4 mr-2" />
+                      <SettingsIcon className="h-4 w-4 mr-2" />
                       Configure
                     </Button>
                   </CardContent>
