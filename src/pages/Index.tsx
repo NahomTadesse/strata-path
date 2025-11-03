@@ -1,6 +1,9 @@
 import { Activity, TrendingUp, Package, Truck, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { KPICard } from "@/components/KPICard";
 import { StatusBadge } from "@/components/StatusBadge";
+import { ProductionMetrics } from "@/components/ProductionMetrics";
+import { MachineMonitor } from "@/components/MachineMonitor";
+import { InventoryAlerts } from "@/components/InventoryAlerts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
@@ -181,6 +184,15 @@ const Index = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Production Metrics */}
+      <ProductionMetrics />
+
+      {/* Machine Monitoring */}
+      <MachineMonitor />
+
+      {/* Inventory Alerts */}
+      <InventoryAlerts />
     </div>
   );
 };

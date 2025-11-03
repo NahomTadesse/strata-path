@@ -6,63 +6,115 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Settings as SettingsIcon, Bell, Shield, Database, Users, Workflow, AlertTriangle, Download, Key, Server, Clock, Gauge, FileText } from "lucide-react";
+import { Settings as SettingsIcon, Bell, Shield, Database, Users, Workflow, AlertTriangle, Download, Key, Server, Clock, Gauge, FileText, Save, RefreshCw, Trash2, Plus, Edit, Lock, Unlock } from "lucide-react";
 import { toast } from "sonner";
+import { Slider } from "@/components/ui/slider";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useState } from "react";
 
 const Settings = () => {
+  const [autoRefreshInterval, setAutoRefreshInterval] = useState([30]);
+  const [sessionTimeout, setSessionTimeout] = useState([30]);
+  const [lowStockThreshold, setLowStockThreshold] = useState([20]);
+  const [efficiencyThreshold, setEfficiencyThreshold] = useState([85]);
+
   const handleSave = () => {
     toast.success("Settings saved successfully!");
   };
 
+  const mockUsers = [
+    { id: 1, name: "John Doe", email: "john@factory.com", role: "Admin", status: "Active", lastLogin: "2 hours ago" },
+    { id: 2, name: "Jane Smith", email: "jane@factory.com", role: "Production Manager", status: "Active", lastLogin: "5 hours ago" },
+    { id: 3, name: "Mike Johnson", email: "mike@factory.com", role: "Logistics Coordinator", status: "Active", lastLogin: "1 day ago" },
+    { id: 4, name: "Sarah Williams", email: "sarah@factory.com", role: "Line Operator", status: "Inactive", lastLogin: "3 days ago" },
+  ];
+
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in pb-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
         <p className="text-muted-foreground">Advanced system configuration and management</p>
       </div>
 
-      <Tabs defaultValue="general" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
-          <TabsTrigger value="general">General</TabsTrigger>
-          <TabsTrigger value="notifications">Alerts</TabsTrigger>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="integrations">Integrations</TabsTrigger>
-          <TabsTrigger value="thresholds">Thresholds</TabsTrigger>
-          <TabsTrigger value="automation">Automation</TabsTrigger>
-          <TabsTrigger value="system">System</TabsTrigger>
+      <Tabs defaultValue="general" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 p-1 rounded-lg" style={{ backgroundColor: 'hsl(var(--sidebar) / 0.3)' }}>
+          <TabsTrigger value="general" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            General
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            Alerts
+          </TabsTrigger>
+          <TabsTrigger value="users" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            Users
+          </TabsTrigger>
+          <TabsTrigger value="security" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            Security
+          </TabsTrigger>
+          <TabsTrigger value="integrations" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            Integrations
+          </TabsTrigger>
+          <TabsTrigger value="thresholds" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            Thresholds
+          </TabsTrigger>
+          <TabsTrigger value="automation" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            Automation
+          </TabsTrigger>
+          <TabsTrigger value="system" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            System
+          </TabsTrigger>
         </TabsList>
 
         {/* General Settings */}
-        <TabsContent value="general" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <SettingsIcon className="h-5 w-5" />
-                <CardTitle>General Settings</CardTitle>
+        <TabsContent value="general" className="space-y-6">
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <SettingsIcon className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle>Facility Configuration</CardTitle>
+                    <CardDescription>Configure basic facility and operational settings</CardDescription>
+                  </div>
+                </div>
+                <Button onClick={handleSave} className="gap-2">
+                  <Save className="h-4 w-4" />
+                  Save Changes
+                </Button>
               </div>
-              <CardDescription>Configure basic system settings and facility information</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
+            <CardContent className="space-y-6 pt-6">
+              <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="factory-name">Factory Name</Label>
-                  <Input id="factory-name" defaultValue="Main Production Facility" />
+                  <Label htmlFor="factory-name" className="text-sm font-semibold flex items-center gap-2">
+                    <Database className="h-4 w-4" />
+                    Factory Name
+                  </Label>
+                  <Input id="factory-name" defaultValue="Main Production Facility" className="border-primary/20 focus:border-primary" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="facility-id">Facility ID</Label>
-                  <Input id="facility-id" defaultValue="FAC-001" />
+                  <Label htmlFor="facility-id" className="text-sm font-semibold flex items-center gap-2">
+                    <Key className="h-4 w-4" />
+                    Facility ID
+                  </Label>
+                  <Input id="facility-id" defaultValue="FAC-001" className="border-primary/20 focus:border-primary" />
                 </div>
               </div>
-              <div className="grid gap-4 md:grid-cols-2">
+              
+              <Separator />
+              
+              <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="location">Location</Label>
-                  <Input id="location" defaultValue="Industrial District, City" />
+                  <Label htmlFor="location" className="text-sm font-semibold">Location</Label>
+                  <Input id="location" defaultValue="Industrial District, City" className="border-primary/20 focus:border-primary" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="timezone">Timezone</Label>
+                  <Label htmlFor="timezone" className="text-sm font-semibold">Timezone</Label>
                   <Select defaultValue="utc-5">
-                    <SelectTrigger id="timezone">
+                    <SelectTrigger id="timezone" className="border-primary/20">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -70,62 +122,92 @@ const Settings = () => {
                       <SelectItem value="utc-5">UTC-5 (EST)</SelectItem>
                       <SelectItem value="utc+0">UTC+0 (GMT)</SelectItem>
                       <SelectItem value="utc+1">UTC+1 (CET)</SelectItem>
+                      <SelectItem value="utc+8">UTC+8 (CST)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
-              <div className="grid gap-4 md:grid-cols-2">
+
+              <Separator />
+
+              <div className="grid gap-6 md:grid-cols-3">
                 <div className="space-y-2">
-                  <Label htmlFor="shift-start">Default Shift Start</Label>
-                  <Input id="shift-start" type="time" defaultValue="06:00" />
+                  <Label htmlFor="shift-start" className="text-sm font-semibold">Default Shift Start</Label>
+                  <Input id="shift-start" type="time" defaultValue="06:00" className="border-primary/20" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="shift-duration">Shift Duration (hours)</Label>
-                  <Input id="shift-duration" type="number" defaultValue="8" />
+                  <Label htmlFor="shift-duration" className="text-sm font-semibold">Shift Duration (hours)</Label>
+                  <Input id="shift-duration" type="number" defaultValue="8" min="1" max="24" className="border-primary/20" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="shifts-per-day" className="text-sm font-semibold">Shifts Per Day</Label>
+                  <Select defaultValue="3">
+                    <SelectTrigger id="shifts-per-day" className="border-primary/20">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 Shift</SelectItem>
+                      <SelectItem value="2">2 Shifts</SelectItem>
+                      <SelectItem value="3">3 Shifts</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="language">System Language</Label>
-                <Select defaultValue="en">
-                  <SelectTrigger id="language">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="en">English</SelectItem>
-                    <SelectItem value="es">Spanish</SelectItem>
-                    <SelectItem value="de">German</SelectItem>
-                    <SelectItem value="zh">Chinese</SelectItem>
-                  </SelectContent>
-                </Select>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <Label className="text-sm font-semibold">Auto-Refresh Interval (seconds)</Label>
+                <div className="flex items-center gap-4">
+                  <Slider
+                    value={autoRefreshInterval}
+                    onValueChange={setAutoRefreshInterval}
+                    min={10}
+                    max={300}
+                    step={10}
+                    className="flex-1"
+                  />
+                  <span className="text-sm font-medium min-w-[60px] text-right">{autoRefreshInterval[0]}s</span>
+                </div>
+                <p className="text-xs text-muted-foreground">How often dashboards refresh automatically</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Display Preferences</CardTitle>
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <CardTitle>Display & Interface</CardTitle>
+              <CardDescription>Customize how information is displayed</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Dark Mode</Label>
+            <CardContent className="space-y-4 pt-6">
+              <div className="flex items-center justify-between p-4 rounded-lg border bg-card/50">
+                <div className="space-y-1">
+                  <Label className="font-semibold">Dark Mode</Label>
                   <p className="text-sm text-muted-foreground">Use dark theme across the platform</p>
                 </div>
                 <Switch defaultChecked />
               </div>
-              <Separator />
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Compact View</Label>
-                  <p className="text-sm text-muted-foreground">Show more data in less space</p>
+              
+              <div className="flex items-center justify-between p-4 rounded-lg border bg-card/50">
+                <div className="space-y-1">
+                  <Label className="font-semibold">Compact View</Label>
+                  <p className="text-sm text-muted-foreground">Display more data in condensed layout</p>
                 </div>
                 <Switch />
               </div>
-              <Separator />
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Auto-refresh Dashboards</Label>
-                  <p className="text-sm text-muted-foreground">Automatically update data every 30 seconds</p>
+              
+              <div className="flex items-center justify-between p-4 rounded-lg border bg-card/50">
+                <div className="space-y-1">
+                  <Label className="font-semibold">High Contrast Mode</Label>
+                  <p className="text-sm text-muted-foreground">Enhanced visibility for better readability</p>
+                </div>
+                <Switch />
+              </div>
+              
+              <div className="flex items-center justify-between p-4 rounded-lg border bg-card/50">
+                <div className="space-y-1">
+                  <Label className="font-semibold">Show Animations</Label>
+                  <p className="text-sm text-muted-foreground">Enable smooth transitions and effects</p>
                 </div>
                 <Switch defaultChecked />
               </div>
@@ -133,400 +215,597 @@ const Settings = () => {
           </Card>
         </TabsContent>
 
-        {/* Notifications */}
-        <TabsContent value="notifications" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Bell className="h-5 w-5" />
-                <CardTitle>Alert Configuration</CardTitle>
+        {/* Alerts & Notifications */}
+        <TabsContent value="notifications" className="space-y-6">
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Bell className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle>Alert Configuration</CardTitle>
+                    <CardDescription>Manage notification preferences and alert rules</CardDescription>
+                  </div>
+                </div>
+                <Button onClick={handleSave} className="gap-2">
+                  <Save className="h-4 w-4" />
+                  Save
+                </Button>
               </div>
-              <CardDescription>Configure when and how you receive notifications</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6 pt-6">
               <div className="space-y-4">
-                <div>
-                  <h4 className="font-semibold mb-3">Production Alerts</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Machine Downtime</Label>
-                        <p className="text-sm text-muted-foreground">Alert when machines are offline</p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Production Target Missed</Label>
-                        <p className="text-sm text-muted-foreground">Notify when targets aren't met</p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Quality Control Failures</Label>
-                        <p className="text-sm text-muted-foreground">Alert on failed quality checks</p>
-                      </div>
-                      <Switch defaultChecked />
+                <div className="flex items-center justify-between p-3 rounded-lg border bg-gradient-to-r from-destructive/5 to-transparent">
+                  <div className="flex items-center gap-3">
+                    <AlertTriangle className="h-5 w-5 text-destructive" />
+                    <div>
+                      <Label className="font-semibold">Critical System Alerts</Label>
+                      <p className="text-xs text-muted-foreground">Machine failures, safety issues</p>
                     </div>
                   </div>
+                  <Switch defaultChecked />
                 </div>
 
-                <Separator className="my-4" />
-
-                <div>
-                  <h4 className="font-semibold mb-3">Inventory Alerts</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Low Stock</Label>
-                        <p className="text-sm text-muted-foreground">Alert when inventory is below threshold</p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Overstock Warning</Label>
-                        <p className="text-sm text-muted-foreground">Notify when stock exceeds optimal levels</p>
-                      </div>
-                      <Switch />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Expiring Materials</Label>
-                        <p className="text-sm text-muted-foreground">Alert for materials nearing expiration</p>
-                      </div>
-                      <Switch defaultChecked />
+                <div className="flex items-center justify-between p-3 rounded-lg border bg-gradient-to-r from-warning/5 to-transparent">
+                  <div className="flex items-center gap-3">
+                    <Clock className="h-5 w-5 text-warning" />
+                    <div>
+                      <Label className="font-semibold">Production Delays</Label>
+                      <p className="text-xs text-muted-foreground">When targets are missed or delayed</p>
                     </div>
                   </div>
+                  <Switch defaultChecked />
                 </div>
 
-                <Separator className="my-4" />
+                <div className="flex items-center justify-between p-3 rounded-lg border bg-gradient-to-r from-success/5 to-transparent">
+                  <div className="flex items-center gap-3">
+                    <Gauge className="h-5 w-5 text-success" />
+                    <div>
+                      <Label className="font-semibold">Quality Control Failures</Label>
+                      <p className="text-xs text-muted-foreground">Failed inspections and quality checks</p>
+                    </div>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+              </div>
 
-                <div>
-                  <h4 className="font-semibold mb-3">Logistics Alerts</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Shipment Delays</Label>
-                        <p className="text-sm text-muted-foreground">Notify about delayed shipments</p>
-                      </div>
-                      <Switch defaultChecked />
+              <Separator />
+
+              <div>
+                <h4 className="font-semibold mb-4 flex items-center gap-2">
+                  <Database className="h-4 w-4" />
+                  Inventory Notifications
+                </h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 rounded-lg border bg-card/50">
+                    <div>
+                      <Label className="font-semibold">Low Stock Warnings</Label>
+                      <p className="text-xs text-muted-foreground">When inventory drops below threshold</p>
                     </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Delivery Confirmations</Label>
-                        <p className="text-sm text-muted-foreground">Alert on successful deliveries</p>
-                      </div>
-                      <Switch />
+                    <Switch defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg border bg-card/50">
+                    <div>
+                      <Label className="font-semibold">Overstock Alerts</Label>
+                      <p className="text-xs text-muted-foreground">Excess inventory warnings</p>
                     </div>
+                    <Switch />
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg border bg-card/50">
+                    <div>
+                      <Label className="font-semibold">Material Expiration</Label>
+                      <p className="text-xs text-muted-foreground">Items approaching expiration date</p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg border bg-card/50">
+                    <div>
+                      <Label className="font-semibold">Reorder Suggestions</Label>
+                      <p className="text-xs text-muted-foreground">AI-driven restock recommendations</p>
+                    </div>
+                    <Switch defaultChecked />
                   </div>
                 </div>
               </div>
 
-              <Separator className="my-4" />
+              <Separator />
 
-              <div className="space-y-2">
-                <Label>Alert Priority Threshold</Label>
+              <div className="space-y-4">
+                <Label className="text-sm font-semibold">Alert Priority Threshold</Label>
                 <Select defaultValue="medium">
-                  <SelectTrigger>
+                  <SelectTrigger className="border-primary/20">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Alerts</SelectItem>
-                    <SelectItem value="medium">Medium & High Priority</SelectItem>
-                    <SelectItem value="high">High Priority Only</SelectItem>
+                    <SelectItem value="all">All Alerts (Low, Medium, High, Critical)</SelectItem>
+                    <SelectItem value="medium">Medium & Above</SelectItem>
+                    <SelectItem value="high">High & Critical Only</SelectItem>
                     <SelectItem value="critical">Critical Only</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <Label className="text-sm font-semibold">Notification Channels</Label>
+                <div className="grid gap-3 md:grid-cols-2">
+                  <div className="flex items-center justify-between p-3 rounded-lg border">
+                    <Label>Email Notifications</Label>
+                    <Switch defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg border">
+                    <Label>SMS Alerts</Label>
+                    <Switch />
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg border">
+                    <Label>In-App Notifications</Label>
+                    <Switch defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg border">
+                    <Label>Webhook Integration</Label>
+                    <Switch />
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
         {/* User Management */}
-        <TabsContent value="users" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                <CardTitle>User Management</CardTitle>
+        <TabsContent value="users" className="space-y-6">
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Users className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle>User Management</CardTitle>
+                    <CardDescription>Manage team members and access permissions</CardDescription>
+                  </div>
+                </div>
+                <Button className="gap-2">
+                  <Plus className="h-4 w-4" />
+                  Add User
+                </Button>
               </div>
-              <CardDescription>Manage users, roles, and permissions</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="p-4 border rounded-lg bg-card">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <p className="font-semibold">System Administrator</p>
-                      <p className="text-sm text-muted-foreground">Full system access and configuration</p>
-                    </div>
-                    <Button variant="outline" size="sm">Configure</Button>
-                  </div>
-                  <div className="flex flex-wrap gap-2 text-xs">
-                    <span className="px-2 py-1 bg-primary/10 text-primary rounded">All Modules</span>
-                    <span className="px-2 py-1 bg-primary/10 text-primary rounded">User Management</span>
-                    <span className="px-2 py-1 bg-primary/10 text-primary rounded">Settings</span>
-                  </div>
-                </div>
+            <CardContent className="pt-6">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Last Login</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {mockUsers.map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell className="font-medium">{user.name}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                          {user.role}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        {user.status === "Active" ? (
+                          <Badge className="bg-success/10 text-success border-success/20">Active</Badge>
+                        ) : (
+                          <Badge variant="outline" className="bg-muted">Inactive</Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">{user.lastLogin}</TableCell>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Button variant="ghost" size="sm">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
 
-                <div className="p-4 border rounded-lg bg-card">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <p className="font-semibold">Production Manager</p>
-                      <p className="text-sm text-muted-foreground">Production pipeline and inventory management</p>
-                    </div>
-                    <Button variant="outline" size="sm">Configure</Button>
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <CardTitle>Role Permissions</CardTitle>
+              <CardDescription>Define access levels for each role</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-6">
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-primary/5 to-transparent">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="font-semibold text-lg">System Administrator</p>
+                    <p className="text-sm text-muted-foreground">Full system access and configuration rights</p>
                   </div>
-                  <div className="flex flex-wrap gap-2 text-xs">
-                    <span className="px-2 py-1 bg-accent/10 text-accent rounded">Production</span>
-                    <span className="px-2 py-1 bg-accent/10 text-accent rounded">Inventory</span>
-                    <span className="px-2 py-1 bg-accent/10 text-accent rounded">Orders</span>
-                  </div>
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Edit className="h-4 w-4" />
+                    Edit
+                  </Button>
                 </div>
-
-                <div className="p-4 border rounded-lg bg-card">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <p className="font-semibold">Logistics Coordinator</p>
-                      <p className="text-sm text-muted-foreground">Shipment and supply chain management</p>
-                    </div>
-                    <Button variant="outline" size="sm">Configure</Button>
-                  </div>
-                  <div className="flex flex-wrap gap-2 text-xs">
-                    <span className="px-2 py-1 bg-success/10 text-success rounded">Logistics</span>
-                    <span className="px-2 py-1 bg-success/10 text-success rounded">Inventory</span>
-                  </div>
-                </div>
-
-                <div className="p-4 border rounded-lg bg-card">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <p className="font-semibold">Line Operator</p>
-                      <p className="text-sm text-muted-foreground">Basic operational access</p>
-                    </div>
-                    <Button variant="outline" size="sm">Configure</Button>
-                  </div>
-                  <div className="flex flex-wrap gap-2 text-xs">
-                    <span className="px-2 py-1 bg-muted text-muted-foreground rounded">Production (View)</span>
-                    <span className="px-2 py-1 bg-muted text-muted-foreground rounded">Workforce</span>
-                  </div>
-                </div>
-
-                <div className="p-4 border rounded-lg bg-card">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <p className="font-semibold">Quality Analyst</p>
-                      <p className="text-sm text-muted-foreground">Quality control and reporting</p>
-                    </div>
-                    <Button variant="outline" size="sm">Configure</Button>
-                  </div>
-                  <div className="flex flex-wrap gap-2 text-xs">
-                    <span className="px-2 py-1 bg-warning/10 text-warning rounded">Analytics</span>
-                    <span className="px-2 py-1 bg-warning/10 text-warning rounded">Production (View)</span>
-                  </div>
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="bg-primary text-primary-foreground">All Modules</Badge>
+                  <Badge className="bg-primary text-primary-foreground">User Management</Badge>
+                  <Badge className="bg-primary text-primary-foreground">System Settings</Badge>
+                  <Badge className="bg-primary text-primary-foreground">Security Config</Badge>
                 </div>
               </div>
 
-              <Separator className="my-4" />
+              <div className="p-4 border rounded-lg bg-card/50">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="font-semibold text-lg">Production Manager</p>
+                    <p className="text-sm text-muted-foreground">Production, inventory, and order management</p>
+                  </div>
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Edit className="h-4 w-4" />
+                    Edit
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline">Production</Badge>
+                  <Badge variant="outline">Inventory</Badge>
+                  <Badge variant="outline">Orders</Badge>
+                  <Badge variant="outline">Analytics</Badge>
+                </div>
+              </div>
 
-              <Button className="w-full">
-                <Users className="h-4 w-4 mr-2" />
-                Add New User
-              </Button>
+              <div className="p-4 border rounded-lg bg-card/50">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="font-semibold text-lg">Logistics Coordinator</p>
+                    <p className="text-sm text-muted-foreground">Shipment and supply chain operations</p>
+                  </div>
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Edit className="h-4 w-4" />
+                    Edit
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline">Logistics</Badge>
+                  <Badge variant="outline">Inventory (View)</Badge>
+                  <Badge variant="outline">Orders (View)</Badge>
+                </div>
+              </div>
+
+              <div className="p-4 border rounded-lg bg-card/50">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="font-semibold text-lg">Line Operator</p>
+                    <p className="text-sm text-muted-foreground">Basic operational and reporting access</p>
+                  </div>
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Edit className="h-4 w-4" />
+                    Edit
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="secondary">Production (View)</Badge>
+                  <Badge variant="secondary">Workforce</Badge>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
 
         {/* Security */}
-        <TabsContent value="security" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                <CardTitle>Security Settings</CardTitle>
+        <TabsContent value="security" className="space-y-6">
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Shield className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle>Security Policies</CardTitle>
+                    <CardDescription>Configure authentication and access controls</CardDescription>
+                  </div>
+                </div>
+                <Button onClick={handleSave} className="gap-2">
+                  <Save className="h-4 w-4" />
+                  Save
+                </Button>
               </div>
-              <CardDescription>Configure security policies and access controls</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6 pt-6">
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-destructive/5 to-transparent">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Lock className="h-5 w-5 text-destructive" />
+                    <div>
+                      <Label className="font-semibold">Two-Factor Authentication (2FA)</Label>
+                      <p className="text-xs text-muted-foreground">Require 2FA for all user accounts</p>
+                    </div>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+              </div>
+
+              <div className="p-4 border rounded-lg bg-card/50">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Clock className="h-5 w-5 text-primary" />
+                    <div>
+                      <Label className="font-semibold">Auto Session Timeout</Label>
+                      <p className="text-xs text-muted-foreground">Automatically log out after inactivity</p>
+                    </div>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <Label className="text-sm font-semibold">Session Timeout Duration</Label>
+                <div className="flex items-center gap-4">
+                  <Slider
+                    value={sessionTimeout}
+                    onValueChange={setSessionTimeout}
+                    min={5}
+                    max={120}
+                    step={5}
+                    className="flex-1"
+                  />
+                  <span className="text-sm font-medium min-w-[80px] text-right">{sessionTimeout[0]} minutes</span>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <h4 className="font-semibold flex items-center gap-2">
+                  <Key className="h-4 w-4" />
+                  Password Requirements
+                </h4>
+                <div className="grid gap-3 md:grid-cols-2">
+                  <div className="flex items-center justify-between p-3 rounded-lg border">
+                    <Label>Minimum 8 characters</Label>
+                    <Switch defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg border">
+                    <Label>Require uppercase</Label>
+                    <Switch defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg border">
+                    <Label>Require numbers</Label>
+                    <Switch defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg border">
+                    <Label>Require special characters</Label>
+                    <Switch defaultChecked />
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <Label htmlFor="password-expiry" className="text-sm font-semibold">Password Expiry</Label>
+                <Select defaultValue="90">
+                  <SelectTrigger id="password-expiry" className="border-primary/20">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="never">Never Expire</SelectItem>
+                    <SelectItem value="30">30 Days</SelectItem>
+                    <SelectItem value="60">60 Days</SelectItem>
+                    <SelectItem value="90">90 Days</SelectItem>
+                    <SelectItem value="180">180 Days</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <h4 className="font-semibold flex items-center gap-2">
+                  <Shield className="h-4 w-4" />
+                  Access Control
+                </h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 rounded-lg border">
+                    <Label>IP Whitelisting</Label>
+                    <Switch />
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg border">
+                    <Label>Login Attempt Limiting</Label>
+                    <Switch defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg border">
+                    <Label>Activity Logging</Label>
+                    <Switch defaultChecked />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <CardTitle>Recent Security Events</CardTitle>
+              <CardDescription>Monitor authentication and access activities</CardDescription>
+            </CardHeader>
+            <CardContent className="pt-6">
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Two-Factor Authentication</Label>
-                    <p className="text-sm text-muted-foreground">Require 2FA for all users</p>
+                {[
+                  { event: "Successful login", user: "john@factory.com", time: "2 minutes ago", type: "success" },
+                  { event: "Failed login attempt", user: "unknown@email.com", time: "15 minutes ago", type: "warning" },
+                  { event: "Password changed", user: "jane@factory.com", time: "1 hour ago", type: "info" },
+                  { event: "New user added", user: "mike@factory.com", time: "3 hours ago", type: "success" },
+                ].map((log, i) => (
+                  <div key={i} className="flex items-center justify-between p-3 rounded-lg border bg-card/50">
+                    <div className="flex items-center gap-3">
+                      {log.type === "success" && <div className="h-2 w-2 rounded-full bg-success" />}
+                      {log.type === "warning" && <div className="h-2 w-2 rounded-full bg-warning" />}
+                      {log.type === "info" && <div className="h-2 w-2 rounded-full bg-primary" />}
+                      <div>
+                        <p className="text-sm font-medium">{log.event}</p>
+                        <p className="text-xs text-muted-foreground">{log.user}</p>
+                      </div>
+                    </div>
+                    <span className="text-xs text-muted-foreground">{log.time}</span>
                   </div>
-                  <Switch defaultChecked />
-                </div>
-                <Separator />
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Session Timeout</Label>
-                    <p className="text-sm text-muted-foreground">Auto-logout after inactivity</p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
-                <Separator />
-                <div className="space-y-2">
-                  <Label>Timeout Duration (minutes)</Label>
-                  <Select defaultValue="30">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="15">15 minutes</SelectItem>
-                      <SelectItem value="30">30 minutes</SelectItem>
-                      <SelectItem value="60">1 hour</SelectItem>
-                      <SelectItem value="120">2 hours</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              <div className="space-y-2">
-                <Label>Password Policy</Label>
-                <div className="space-y-2 p-3 border rounded-lg bg-muted/50">
-                  <div className="flex items-center gap-2 text-sm">
-                    <input type="checkbox" defaultChecked className="rounded" />
-                    <span>Minimum 8 characters</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <input type="checkbox" defaultChecked className="rounded" />
-                    <span>Require uppercase and lowercase</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <input type="checkbox" defaultChecked className="rounded" />
-                    <span>Require numbers</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <input type="checkbox" className="rounded" />
-                    <span>Require special characters</span>
-                  </div>
-                </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              <div className="space-y-2">
-                <Label>API Access</Label>
-                <div className="flex gap-2">
-                  <Input placeholder="API Key" type="password" defaultValue="••••••••••••••••" />
-                  <Button variant="outline">Regenerate</Button>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Audit Logging</Label>
-                <div className="flex items-center justify-between p-3 border rounded-lg">
-                  <span className="text-sm">Track all user activities and changes</span>
-                  <Switch defaultChecked />
-                </div>
+                ))}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
         {/* Integrations */}
-        <TabsContent value="integrations" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Database className="h-5 w-5" />
-                <CardTitle>System Integrations</CardTitle>
+        <TabsContent value="integrations" className="space-y-6">
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Database className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <CardTitle>System Integrations</CardTitle>
+                  <CardDescription>Connect external systems and services</CardDescription>
+                </div>
               </div>
-              <CardDescription>Connect external systems, IoT devices, and third-party services</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pt-6">
+              <div className="grid gap-4 md:grid-cols-2">
+                <Card className="border-primary/20">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-base">ERP System</CardTitle>
+                      <Badge className="bg-success/10 text-success border-success/20">Connected</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="space-y-2">
+                      <Label htmlFor="erp-endpoint" className="text-sm">API Endpoint</Label>
+                      <Input id="erp-endpoint" defaultValue="https://erp.company.com/api" className="text-sm" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="erp-key" className="text-sm">API Key</Label>
+                      <Input id="erp-key" type="password" defaultValue="••••••••••••" className="text-sm" />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button size="sm" variant="outline" className="flex-1">
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Test
+                      </Button>
+                      <Button size="sm" variant="outline" className="flex-1">
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-primary/20">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-base">IoT Sensors</CardTitle>
+                      <Badge className="bg-success/10 text-success border-success/20">Active</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="space-y-2">
+                      <Label htmlFor="iot-protocol" className="text-sm">Protocol</Label>
+                      <Select defaultValue="mqtt">
+                        <SelectTrigger id="iot-protocol">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="mqtt">MQTT</SelectItem>
+                          <SelectItem value="http">HTTP/REST</SelectItem>
+                          <SelectItem value="websocket">WebSocket</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="iot-endpoint" className="text-sm">Broker URL</Label>
+                      <Input id="iot-endpoint" defaultValue="mqtt://iot.factory.local:1883" className="text-sm" />
+                    </div>
+                    <Button size="sm" variant="outline" className="w-full">
+                      <Settings className="h-4 w-4 mr-2" />
+                      Configure
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-muted">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-base">SCADA System</CardTitle>
+                      <Badge variant="outline">Not Connected</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <p className="text-sm text-muted-foreground">
+                      Connect SCADA for real-time machine data integration
+                    </p>
+                    <Button size="sm" className="w-full">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Connect SCADA
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-muted">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-base">Logistics Partners</CardTitle>
+                      <Badge variant="outline">Not Connected</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <p className="text-sm text-muted-foreground">
+                      Integrate with carriers for shipment tracking
+                    </p>
+                    <Button size="sm" className="w-full">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Partner
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Separator className="my-6" />
+
               <div className="space-y-4">
-                <div className="p-4 border rounded-lg">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <Server className="h-5 w-5 text-primary" />
-                      <div>
-                        <p className="font-semibold">ERP System</p>
-                        <p className="text-sm text-muted-foreground">SAP, Oracle, or custom ERP</p>
-                      </div>
+                <h4 className="font-semibold">Webhook Endpoints</h4>
+                <div className="space-y-3">
+                  <div className="p-4 border rounded-lg bg-card/50">
+                    <div className="flex items-center justify-between mb-2">
+                      <Label className="font-semibold">Production Updates</Label>
+                      <Switch defaultChecked />
                     </div>
-                    <span className="px-3 py-1 text-xs bg-success/10 text-success rounded-full">Connected</span>
+                    <Input 
+                      defaultValue="https://api.company.com/webhooks/production" 
+                      className="text-sm"
+                      readOnly
+                    />
                   </div>
-                  <div className="flex gap-2">
-                    <Input placeholder="API Endpoint" defaultValue="https://erp.company.com/api" />
-                    <Button variant="outline">Configure</Button>
-                  </div>
-                </div>
-
-                <div className="p-4 border rounded-lg">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <Gauge className="h-5 w-5 text-accent" />
-                      <div>
-                        <p className="font-semibold">IoT Sensors & SCADA</p>
-                        <p className="text-sm text-muted-foreground">Real-time machine data</p>
-                      </div>
+                  <div className="p-4 border rounded-lg bg-card/50">
+                    <div className="flex items-center justify-between mb-2">
+                      <Label className="font-semibold">Inventory Changes</Label>
+                      <Switch defaultChecked />
                     </div>
-                    <span className="px-3 py-1 text-xs bg-muted text-muted-foreground rounded-full">Not Connected</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <Input placeholder="Device Gateway URL" />
-                    <Button>Connect</Button>
-                  </div>
-                </div>
-
-                <div className="p-4 border rounded-lg">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <Key className="h-5 w-5 text-warning" />
-                      <div>
-                        <p className="font-semibold">Logistics Partners API</p>
-                        <p className="text-sm text-muted-foreground">FedEx, UPS, DHL integration</p>
-                      </div>
-                    </div>
-                    <span className="px-3 py-1 text-xs bg-success/10 text-success rounded-full">Connected</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <Input placeholder="Partner API Key" type="password" defaultValue="••••••••••••••••" />
-                    <Button variant="outline">Update</Button>
-                  </div>
-                </div>
-
-                <div className="p-4 border rounded-lg">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <Database className="h-5 w-5 text-success" />
-                      <div>
-                        <p className="font-semibold">Supply Chain Database</p>
-                        <p className="text-sm text-muted-foreground">Supplier and vendor data sync</p>
-                      </div>
-                    </div>
-                    <span className="px-3 py-1 text-xs bg-muted text-muted-foreground rounded-full">Not Connected</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <Input placeholder="Database Connection String" />
-                    <Button>Connect</Button>
-                  </div>
-                </div>
-
-                <div className="p-4 border rounded-lg">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <FileText className="h-5 w-5 text-primary" />
-                      <div>
-                        <p className="font-semibold">Quality Management System</p>
-                        <p className="text-sm text-muted-foreground">ISO compliance and QMS integration</p>
-                      </div>
-                    </div>
-                    <span className="px-3 py-1 text-xs bg-muted text-muted-foreground rounded-full">Not Connected</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <Input placeholder="QMS API Endpoint" />
-                    <Button>Connect</Button>
+                    <Input 
+                      defaultValue="https://api.company.com/webhooks/inventory" 
+                      className="text-sm"
+                      readOnly
+                    />
                   </div>
                 </div>
               </div>
@@ -535,90 +814,172 @@ const Settings = () => {
         </TabsContent>
 
         {/* Thresholds */}
-        <TabsContent value="thresholds" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5" />
-                <CardTitle>Alert Thresholds</CardTitle>
+        <TabsContent value="thresholds" className="space-y-6">
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Gauge className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle>Performance Thresholds</CardTitle>
+                    <CardDescription>Set operational limits and targets</CardDescription>
+                  </div>
+                </div>
+                <Button onClick={handleSave} className="gap-2">
+                  <Save className="h-4 w-4" />
+                  Save
+                </Button>
               </div>
-              <CardDescription>Configure operational thresholds and trigger points</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <h4 className="font-semibold mb-3">Production Thresholds</h4>
-                <div className="space-y-3">
-                  <div className="grid gap-2">
-                    <Label>Minimum Efficiency (%)</Label>
-                    <div className="flex gap-2 items-center">
-                      <Input type="number" defaultValue="85" className="flex-1" />
-                      <span className="text-sm text-muted-foreground">Alert if below</span>
-                    </div>
+            <CardContent className="space-y-6 pt-6">
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-semibold mb-4 block">Low Stock Threshold (%)</Label>
+                  <div className="flex items-center gap-4">
+                    <Slider
+                      value={lowStockThreshold}
+                      onValueChange={setLowStockThreshold}
+                      min={5}
+                      max={50}
+                      step={5}
+                      className="flex-1"
+                    />
+                    <span className="text-sm font-medium min-w-[60px] text-right bg-destructive/10 text-destructive px-3 py-1 rounded">
+                      {lowStockThreshold[0]}%
+                    </span>
                   </div>
-                  <div className="grid gap-2">
-                    <Label>Maximum Downtime (hours/day)</Label>
-                    <div className="flex gap-2 items-center">
-                      <Input type="number" defaultValue="2" className="flex-1" />
-                      <span className="text-sm text-muted-foreground">Alert if exceeds</span>
-                    </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Trigger alert when stock falls below this percentage
+                  </p>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <Label className="text-sm font-semibold mb-4 block">Minimum Efficiency Target (%)</Label>
+                  <div className="flex items-center gap-4">
+                    <Slider
+                      value={efficiencyThreshold}
+                      onValueChange={setEfficiencyThreshold}
+                      min={50}
+                      max={100}
+                      step={5}
+                      className="flex-1"
+                    />
+                    <span className="text-sm font-medium min-w-[60px] text-right bg-success/10 text-success px-3 py-1 rounded">
+                      {efficiencyThreshold[0]}%
+                    </span>
                   </div>
-                  <div className="grid gap-2">
-                    <Label>Defect Rate Threshold (%)</Label>
-                    <div className="flex gap-2 items-center">
-                      <Input type="number" defaultValue="2" step="0.1" className="flex-1" />
-                      <span className="text-sm text-muted-foreground">Alert if exceeds</span>
-                    </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Alert when production line efficiency drops below target
+                  </p>
+                </div>
+
+                <Separator />
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="max-downtime" className="text-sm font-semibold">
+                      Max Acceptable Downtime (minutes)
+                    </Label>
+                    <Input 
+                      id="max-downtime" 
+                      type="number" 
+                      defaultValue="30"
+                      min="0"
+                      className="border-primary/20"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="quality-threshold" className="text-sm font-semibold">
+                      Min Quality Pass Rate (%)
+                    </Label>
+                    <Input 
+                      id="quality-threshold" 
+                      type="number" 
+                      defaultValue="95"
+                      min="0"
+                      max="100"
+                      className="border-primary/20"
+                    />
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="delivery-sla" className="text-sm font-semibold">
+                      Delivery SLA (hours)
+                    </Label>
+                    <Input 
+                      id="delivery-sla" 
+                      type="number" 
+                      defaultValue="48"
+                      min="0"
+                      className="border-primary/20"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="production-target" className="text-sm font-semibold">
+                      Daily Production Target (units)
+                    </Label>
+                    <Input 
+                      id="production-target" 
+                      type="number" 
+                      defaultValue="1200"
+                      min="0"
+                      className="border-primary/20"
+                    />
                   </div>
                 </div>
               </div>
+            </CardContent>
+          </Card>
 
-              <Separator className="my-4" />
-
-              <div>
-                <h4 className="font-semibold mb-3">Inventory Thresholds</h4>
-                <div className="space-y-3">
-                  <div className="grid gap-2">
-                    <Label>Low Stock Warning (%)</Label>
-                    <div className="flex gap-2 items-center">
-                      <Input type="number" defaultValue="20" className="flex-1" />
-                      <span className="text-sm text-muted-foreground">% of max capacity</span>
-                    </div>
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <CardTitle>Alert Escalation Rules</CardTitle>
+              <CardDescription>Define when and how alerts escalate</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-6">
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-warning/5 to-transparent">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <Label className="font-semibold">Critical Alert Escalation</Label>
+                    <p className="text-xs text-muted-foreground">Notify management if unresolved</p>
                   </div>
-                  <div className="grid gap-2">
-                    <Label>Critical Stock Level (%)</Label>
-                    <div className="flex gap-2 items-center">
-                      <Input type="number" defaultValue="10" className="flex-1" />
-                      <span className="text-sm text-muted-foreground">% of max capacity</span>
-                    </div>
-                  </div>
-                  <div className="grid gap-2">
-                    <Label>Overstock Threshold (%)</Label>
-                    <div className="flex gap-2 items-center">
-                      <Input type="number" defaultValue="95" className="flex-1" />
-                      <span className="text-sm text-muted-foreground">% of max capacity</span>
-                    </div>
-                  </div>
+                  <Switch defaultChecked />
                 </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              <div>
-                <h4 className="font-semibold mb-3">Logistics Thresholds</h4>
-                <div className="space-y-3">
-                  <div className="grid gap-2">
-                    <Label>Delivery Delay Alert (hours)</Label>
-                    <div className="flex gap-2 items-center">
-                      <Input type="number" defaultValue="2" className="flex-1" />
-                      <span className="text-sm text-muted-foreground">Hours past ETA</span>
-                    </div>
+                <div className="grid gap-3 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label className="text-xs">Escalation Delay</Label>
+                    <Select defaultValue="15">
+                      <SelectTrigger className="h-9">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="5">5 minutes</SelectItem>
+                        <SelectItem value="15">15 minutes</SelectItem>
+                        <SelectItem value="30">30 minutes</SelectItem>
+                        <SelectItem value="60">1 hour</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
-                  <div className="grid gap-2">
-                    <Label>On-Time Delivery Target (%)</Label>
-                    <div className="flex gap-2 items-center">
-                      <Input type="number" defaultValue="95" className="flex-1" />
-                      <span className="text-sm text-muted-foreground">Alert if below</span>
-                    </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs">Notify</Label>
+                    <Select defaultValue="manager">
+                      <SelectTrigger className="h-9">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="manager">Production Manager</SelectItem>
+                        <SelectItem value="admin">System Admin</SelectItem>
+                        <SelectItem value="both">Both</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </div>
@@ -627,211 +988,287 @@ const Settings = () => {
         </TabsContent>
 
         {/* Automation */}
-        <TabsContent value="automation" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Workflow className="h-5 w-5" />
-                <CardTitle>Workflow Automation</CardTitle>
+        <TabsContent value="automation" className="space-y-6">
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Workflow className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle>Automation Rules</CardTitle>
+                    <CardDescription>Automated workflows and intelligent actions</CardDescription>
+                  </div>
+                </div>
+                <Button className="gap-2">
+                  <Plus className="h-4 w-4" />
+                  New Rule
+                </Button>
               </div>
-              <CardDescription>Configure automated actions and workflows</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="p-4 border rounded-lg bg-card">
-                  <div className="flex items-center justify-between mb-2">
-                    <div>
-                      <p className="font-semibold">Auto-Restock on Low Inventory</p>
-                      <p className="text-sm text-muted-foreground">Automatically generate purchase orders</p>
-                    </div>
-                    <Switch defaultChecked />
+            <CardContent className="space-y-4 pt-6">
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-success/5 to-transparent">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex-1">
+                    <Label className="font-semibold">Auto-Reorder Low Stock Items</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Automatically generate purchase orders when stock is low
+                    </p>
                   </div>
-                  <div className="flex gap-2 mt-3">
-                    <Input placeholder="Minimum quantity" type="number" defaultValue="100" />
-                    <Input placeholder="Reorder quantity" type="number" defaultValue="500" />
+                  <Switch defaultChecked />
+                </div>
+                <div className="mt-3 pt-3 border-t">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Badge variant="outline" className="text-xs">Trigger: Stock &lt; 20%</Badge>
+                    <span>→</span>
+                    <Badge variant="outline" className="text-xs">Action: Generate PO</Badge>
                   </div>
                 </div>
+              </div>
 
-                <div className="p-4 border rounded-lg bg-card">
-                  <div className="flex items-center justify-between mb-2">
-                    <div>
-                      <p className="font-semibold">Shift Change Notifications</p>
-                      <p className="text-sm text-muted-foreground">Alert supervisors 15min before shift change</p>
-                    </div>
-                    <Switch defaultChecked />
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-primary/5 to-transparent">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex-1">
+                    <Label className="font-semibold">Shift Handover Reports</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Auto-generate and email reports at shift changes
+                    </p>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+                <div className="mt-3 pt-3 border-t">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Badge variant="outline" className="text-xs">Trigger: Shift End</Badge>
+                    <span>→</span>
+                    <Badge variant="outline" className="text-xs">Action: Email Report</Badge>
                   </div>
                 </div>
+              </div>
 
-                <div className="p-4 border rounded-lg bg-card">
-                  <div className="flex items-center justify-between mb-2">
-                    <div>
-                      <p className="font-semibold">Quality Check Reminders</p>
-                      <p className="text-sm text-muted-foreground">Remind operators to perform quality checks</p>
-                    </div>
-                    <Switch defaultChecked />
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-warning/5 to-transparent">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex-1">
+                    <Label className="font-semibold">Quality Check Failures</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Pause production line when quality checks fail repeatedly
+                    </p>
                   </div>
-                  <div className="flex gap-2 mt-3">
-                    <Select defaultValue="2">
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">Every 1 hour</SelectItem>
-                        <SelectItem value="2">Every 2 hours</SelectItem>
-                        <SelectItem value="4">Every 4 hours</SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <Switch defaultChecked />
+                </div>
+                <div className="mt-3 pt-3 border-t">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Badge variant="outline" className="text-xs">Trigger: 3 Failed Checks</Badge>
+                    <span>→</span>
+                    <Badge variant="outline" className="text-xs">Action: Pause Line</Badge>
                   </div>
                 </div>
+              </div>
 
-                <div className="p-4 border rounded-lg bg-card">
-                  <div className="flex items-center justify-between mb-2">
-                    <div>
-                      <p className="font-semibold">Preventive Maintenance Scheduling</p>
-                      <p className="text-sm text-muted-foreground">Schedule maintenance based on runtime hours</p>
-                    </div>
-                    <Switch />
+              <div className="p-4 border rounded-lg bg-card/50">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex-1">
+                    <Label className="font-semibold">Predictive Maintenance Scheduling</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Schedule maintenance based on machine usage patterns
+                    </p>
                   </div>
-                  <div className="flex gap-2 mt-3">
-                    <Input placeholder="Hours between maintenance" type="number" defaultValue="200" />
+                  <Switch />
+                </div>
+                <div className="mt-3 pt-3 border-t">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Badge variant="outline" className="text-xs">Trigger: AI Analysis</Badge>
+                    <span>→</span>
+                    <Badge variant="outline" className="text-xs">Action: Schedule Task</Badge>
                   </div>
                 </div>
+              </div>
 
-                <div className="p-4 border rounded-lg bg-card">
-                  <div className="flex items-center justify-between mb-2">
-                    <div>
-                      <p className="font-semibold">Auto-Generate Daily Reports</p>
-                      <p className="text-sm text-muted-foreground">Email production summary at end of day</p>
-                    </div>
-                    <Switch defaultChecked />
+              <div className="p-4 border rounded-lg bg-card/50">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex-1">
+                    <Label className="font-semibold">Shipment Delay Notifications</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Notify customers when shipments are delayed
+                    </p>
                   </div>
-                  <div className="flex gap-2 mt-3">
-                    <Input type="time" defaultValue="18:00" />
-                    <Input placeholder="Email recipients" defaultValue="manager@company.com" />
+                  <Switch defaultChecked />
+                </div>
+                <div className="mt-3 pt-3 border-t">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Badge variant="outline" className="text-xs">Trigger: ETA Changed</Badge>
+                    <span>→</span>
+                    <Badge variant="outline" className="text-xs">Action: Send Email</Badge>
                   </div>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <CardTitle>Scheduled Tasks</CardTitle>
+              <CardDescription>Recurring automated operations</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3 pt-6">
+              <div className="p-3 border rounded-lg bg-card/50 flex items-center justify-between">
+                <div>
+                  <Label className="font-semibold text-sm">Daily Production Summary</Label>
+                  <p className="text-xs text-muted-foreground">Runs at 11:59 PM daily</p>
+                </div>
+                <Badge className="bg-success/10 text-success border-success/20">Active</Badge>
+              </div>
+              <div className="p-3 border rounded-lg bg-card/50 flex items-center justify-between">
+                <div>
+                  <Label className="font-semibold text-sm">Weekly Inventory Audit</Label>
+                  <p className="text-xs text-muted-foreground">Runs Sunday at 6:00 AM</p>
+                </div>
+                <Badge className="bg-success/10 text-success border-success/20">Active</Badge>
+              </div>
+              <div className="p-3 border rounded-lg bg-card/50 flex items-center justify-between">
+                <div>
+                  <Label className="font-semibold text-sm">Monthly Analytics Report</Label>
+                  <p className="text-xs text-muted-foreground">Runs 1st of each month</p>
+                </div>
+                <Badge className="bg-success/10 text-success border-success/20">Active</Badge>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
         {/* System */}
-        <TabsContent value="system" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Server className="h-5 w-5" />
-                <CardTitle>System Maintenance</CardTitle>
+        <TabsContent value="system" className="space-y-6">
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Server className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <CardTitle>System Information</CardTitle>
+                  <CardDescription>Platform health and diagnostics</CardDescription>
+                </div>
               </div>
-              <CardDescription>System health, backups, and maintenance operations</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <h4 className="font-semibold mb-3">Database Management</h4>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between p-3 border rounded-lg">
-                    <div>
-                      <p className="font-medium">Database Size</p>
-                      <p className="text-sm text-muted-foreground">2.4 GB / 10 GB allocated</p>
-                    </div>
-                    <Button variant="outline" size="sm">Optimize</Button>
-                  </div>
-                  <div className="flex items-center justify-between p-3 border rounded-lg">
-                    <div>
-                      <p className="font-medium">Last Backup</p>
-                      <p className="text-sm text-muted-foreground">Today at 02:00 AM</p>
-                    </div>
-                    <Button variant="outline" size="sm">Backup Now</Button>
+            <CardContent className="space-y-4 pt-6">
+              <div className="grid gap-4 md:grid-cols-3">
+                <div className="p-4 border rounded-lg bg-card/50">
+                  <Label className="text-xs text-muted-foreground">System Version</Label>
+                  <p className="text-lg font-semibold mt-1">v2.5.3</p>
+                </div>
+                <div className="p-4 border rounded-lg bg-card/50">
+                  <Label className="text-xs text-muted-foreground">Database Status</Label>
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="h-2 w-2 rounded-full bg-success" />
+                    <p className="text-lg font-semibold">Healthy</p>
                   </div>
                 </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              <div>
-                <h4 className="font-semibold mb-3">Data Export</h4>
-                <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start">
-                    <Download className="h-4 w-4 mr-2" />
-                    Export Production Data (CSV)
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start">
-                    <Download className="h-4 w-4 mr-2" />
-                    Export Inventory Report (Excel)
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start">
-                    <Download className="h-4 w-4 mr-2" />
-                    Export Analytics Dashboard (PDF)
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start">
-                    <Download className="h-4 w-4 mr-2" />
-                    Export Complete System Data (JSON)
-                  </Button>
-                </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              <div>
-                <h4 className="font-semibold mb-3">System Information</h4>
-                <div className="space-y-2 p-3 border rounded-lg bg-muted/50 font-mono text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Version:</span>
-                    <span>v2.4.1</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Uptime:</span>
-                    <span>23 days, 14 hours</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Active Users:</span>
-                    <span>46 / 142</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">CPU Usage:</span>
-                    <span>34%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Memory:</span>
-                    <span>4.2 GB / 16 GB</span>
-                  </div>
-                </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              <div>
-                <h4 className="font-semibold mb-3 text-destructive">Danger Zone</h4>
-                <div className="space-y-2 p-4 border-2 border-destructive/50 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Clear All Cache</p>
-                      <p className="text-sm text-muted-foreground">Remove temporary data and cached files</p>
-                    </div>
-                    <Button variant="destructive" size="sm">Clear Cache</Button>
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Reset to Factory Defaults</p>
-                      <p className="text-sm text-muted-foreground">⚠️ This will erase all custom settings</p>
-                    </div>
-                    <Button variant="destructive" size="sm">Reset</Button>
-                  </div>
+                <div className="p-4 border rounded-lg bg-card/50">
+                  <Label className="text-xs text-muted-foreground">API Response Time</Label>
+                  <p className="text-lg font-semibold mt-1">127ms</p>
                 </div>
               </div>
             </CardContent>
           </Card>
+
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <CardTitle>Data Management</CardTitle>
+              <CardDescription>Backup, export, and maintenance operations</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-6">
+              <div className="p-4 border rounded-lg bg-card/50">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <Label className="font-semibold">Automatic Backups</Label>
+                    <p className="text-xs text-muted-foreground">Daily automated database backups</p>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  Last backup: 2 hours ago
+                </div>
+              </div>
+
+              <div className="grid gap-3 md:grid-cols-2">
+                <Button variant="outline" className="gap-2">
+                  <Download className="h-4 w-4" />
+                  Export All Data
+                </Button>
+                <Button variant="outline" className="gap-2">
+                  <FileText className="h-4 w-4" />
+                  Generate System Report
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+              <CardTitle>Maintenance Mode</CardTitle>
+              <CardDescription>System maintenance and updates</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-6">
+              <div className="p-4 border border-warning/30 rounded-lg bg-gradient-to-r from-warning/5 to-transparent">
+                <div className="flex items-center gap-3 mb-3">
+                  <AlertTriangle className="h-5 w-5 text-warning" />
+                  <Label className="font-semibold">Enable Maintenance Mode</Label>
+                </div>
+                <p className="text-xs text-muted-foreground mb-4">
+                  This will temporarily disable user access while performing system updates
+                </p>
+                <Button variant="outline" className="gap-2">
+                  <Lock className="h-4 w-4" />
+                  Enable Maintenance Mode
+                </Button>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-3">
+                <Label className="font-semibold">Database Optimization</Label>
+                <p className="text-sm text-muted-foreground">
+                  Optimize database tables and indexes for better performance
+                </p>
+                <Button variant="outline" className="gap-2">
+                  <RefreshCw className="h-4 w-4" />
+                  Run Optimization
+                </Button>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-3">
+                <Label className="font-semibold">Clear Cache</Label>
+                <p className="text-sm text-muted-foreground">
+                  Clear system cache to resolve performance issues
+                </p>
+                <Button variant="outline" className="gap-2">
+                  <Trash2 className="h-4 w-4" />
+                  Clear All Caches
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-destructive/20">
+            <CardHeader className="bg-gradient-to-r from-destructive/5 to-transparent">
+              <CardTitle className="text-destructive">Danger Zone</CardTitle>
+              <CardDescription>Irreversible actions - proceed with caution</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3 pt-6">
+              <Button variant="outline" className="w-full gap-2 border-destructive/30 text-destructive hover:bg-destructive/10">
+                <Trash2 className="h-4 w-4" />
+                Reset All Settings to Default
+              </Button>
+              <Button variant="outline" className="w-full gap-2 border-destructive/30 text-destructive hover:bg-destructive/10">
+                <AlertTriangle className="h-4 w-4" />
+                Purge Historical Data (90+ days)
+              </Button>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
-
-      {/* Save All Button */}
-      <div className="flex justify-end gap-2">
-        <Button variant="outline" size="lg">Cancel</Button>
-        <Button size="lg" className="bg-gradient-primary" onClick={handleSave}>
-          Save All Changes
-        </Button>
-      </div>
     </div>
   );
 };
